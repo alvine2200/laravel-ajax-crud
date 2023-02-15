@@ -2,13 +2,14 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @if (Session::has('success'))
+            {{-- @if (Session::has('success'))
                 <div class="success fw-bold">{{ Session::get('success') }}</div>
             @elseif (Session::has('errors'))
-                <div class="errors fw-bold align-items-center">{{ Session::get('errors') }}</div>                
+                <div class="errors fw-bold align-items-center">{{ Session::get('errors') }}</div>
             @else
-            @endif
+            @endif --}}
             <div class="col-md-12">
+                <div id="success_message"></div>
                 <div class="card">
                     <div class="card-header">
                         <h4>Students Data</h4>
@@ -31,32 +32,23 @@
                                 <tbody>
                                     @forelse ($students as $student)
                                         <tr>
-                                        <td>{{ $student->id }}</td>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->email }}</td>
-                                        <td>{{ $student->phone }}</td>
-                                        <td>{{ $student->course }}</td>
-                                        <td>
-                                            <a href="" class="btn btn-info">View</a> |
-                                            <a href="" class="btn btn-secondary">Edit</a> |
-                                            <a href="" class="btn btn-danger">Delete</a>
-                                        </td>
-                                    </tr>  
+                                            <td>{{ $student->id }}</td>
+                                            <td>{{ $student->name }}</td>
+                                            <td>{{ $student->email }}</td>
+                                            <td>{{ $student->phone }}</td>
+                                            <td>{{ $student->course }}</td>
+                                            <td>
+                                                <a href="" type="button" value=""  class=" view_student btn btn-info">View</a> |
+                                                <a href="" type="button" value=""  class=" edit_student btn btn-secondary">Edit</a> |
+                                                <a href="" type="button" value=""  class=" delete_student btn btn-danger">Delete</a>
+                                            </td>
+                                        </tr>
                                     @empty
-                                      <tr>
-                                        <td>1</td>
-                                        <td>avine</td>
-                                        <td>alvinellavu@gmail.com</td>
-                                        <td>07123445542</td>
-                                        <td>Comp Science</td>
-                                        <td>
-                                            <a href="" class="btn btn-info">View</a> |
-                                            <a href="" class="btn btn-secondary">Edit</a> |
-                                            <a href="" class="btn btn-danger">Delete</a>
-                                        </td>
-                                    </tr>  
+                                        <tr>
+                                            <td colspan="6">No data Yet</td>
+                                        </tr>
                                     @endforelse
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -64,81 +56,115 @@
                     </div>
                 </div>
             </div>
-        </>
-    </div>
 
-    <div class="modal fade" id="AddStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="mb-3">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" placeholder="Enter Full Names..."
-                                    class="name form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email">Email</label>
-                                <input type="text" Email="email" placeholder="Enter Email..."
-                                    class="email form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="nphone">Phone</label>
-                                <input type="text" Phone="phone" placeholder="Enter Phone Number ..."
-                                    class="phone form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="course">Course</label>
-                                <input type="text" name="course" placeholder="Enter Course..."
-                                    class=" course form-control">
+        </div>
+
+        <div class="modal fade" id="AddStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">                        
+                        <div class="col-md-12">                            
+                            <div class="form-group">
+                                <ul id="saveformError"></ul>
+                                <div class="mb-3">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" placeholder="Enter Full Names..."
+                                        class="name form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email">Email</label>
+                                    <input type="text" Email="email" placeholder="Enter Email..."
+                                        class="email form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nphone">Phone</label>
+                                    <input type="text" Phone="phone" placeholder="Enter Phone Number ..."
+                                        class="phone form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="course">Course</label>
+                                    <input type="text" name="course" placeholder="Enter Course..."
+                                        class=" course form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary add_student">Save</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary add_student">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $(document).on('click', '.add_student', function(event) {
-                event.preventDefault();
+    @section('scripts')
+        <script>
+            $(document).ready(function() {
 
-                var data = {
-                    'name': $('.name').val(),
-                    'email': $('.email').val(),
-                    'phone': $('.phone').val(),
-                    'course': $('.course').val(),
+                public function fetchStudent(){
+                    $.ajax({
+                        type: "GET",
+                        url: "/fetch/students",
+                        dataType: 'json',
+                        success: function(response) {
+                            $.each(response.students, function (key, item) { 
+                                 
+                            });
+                        }
+                    });
                 }
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
-                $.ajax({
-                    type: "POST",
-                    url: "/students",
-                    data: data,
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response)
+                $(document).on('click', '.add_student', function(event) {
+                    event.preventDefault();
 
+                    var data = {
+                        'name': $('.name').val(),
+                        'email': $('.email').val(),
+                        'phone': $('.phone').val(),
+                        'course': $('.course').val(),
                     }
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/students",
+                        data: data,
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response)
+                            if (response.status == 400) {
+                                $('#saveformError').html("");
+                                $('#saveformError').addClass('alert alert-danger');
+                                $.each(response.errors, function(key, err_values) {
+                                    $('#saveformError').append('<li>' + err_values +
+                                        '</li>');
+                                });
+                            }
+                            else{
+                                $('#saveformError').html("");
+                                $('#success_message').addClass("alert alert-success");
+                                $('#success_message').text(response.message);
+                                $('#AddStudentModal').modal('hide');
+                                $('#AddStudentModal').find('input').val("");
+                            }
+                        }
+                    });
                 });
             });
-        });
-    </script>
-@endsection
+
+            // edit student
+            
+        </script>
+    @endsection

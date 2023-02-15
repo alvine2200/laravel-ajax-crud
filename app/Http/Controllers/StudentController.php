@@ -11,17 +11,26 @@ class StudentController extends Controller
 {
     public function index()
     {
+        return view('students.index');
+    }
+
+    public function fetch()
+    {
         $students = Student::all(['id', 'name', 'email', 'phone', 'course']);
-        return view('students.index', ['students' => $students]);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Students fetched successfully',
+            'data' => $students
+        ]);
     }
 
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'string',
-            'email' => 'string|email|unique:students,email',
-            'phone' => 'string|numeric',
-            'course' => 'string|max:30'
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:students,email',
+            'phone' => 'required|string|numeric',
+            'course' => 'required|string|max:30'
         ]);
         if ($validator->fails()) {
             return response()->json([
