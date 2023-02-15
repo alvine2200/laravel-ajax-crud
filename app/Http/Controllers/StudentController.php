@@ -24,6 +24,23 @@ class StudentController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+        $student = Student::find($id);
+        if ($student) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'Student fetched successfully',
+                'data' => $student
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Students Not Found',
+            ]);
+        }
+    }
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [

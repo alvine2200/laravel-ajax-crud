@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('content')
+    @include('students.addstudent')
+    @include('students.editmodal')
+
+
     <div class="container">
         <div class="row">
             {{-- @if (Session::has('success'))
@@ -39,50 +43,6 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-
-        <div class="modal fade" id="AddStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <ul id="saveformError"></ul>
-                                <div class="mb-3">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" placeholder="Enter Full Names..."
-                                        class="name form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email">Email</label>
-                                    <input type="text" Email="email" placeholder="Enter Email..."
-                                        class="email form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nphone">Phone</label>
-                                    <input type="text" Phone="phone" placeholder="Enter Phone Number ..."
-                                        class="phone form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="course">Course</label>
-                                    <input type="text" name="course" placeholder="Enter Course..."
-                                        class=" course form-control">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary add_student">Save</button>
-                    </div>
-                </div>
-            </div>
         </div>
     @endsection
 
@@ -106,15 +66,29 @@
                                            <td>'+item.email+'</td>\
                                            <td>'+item.phone+'</td>\
                                            <td>'+item.course+'</td>\
-                                           <td><button type="button" value="'+item.id+'"  class=" edit_student btn btn-info">Edit</button></td>\
+                                           <td><button type="button" value="'+item.id+'" data-bs-toggle="modal" data-bs-target="#EditStudentModal" class=" edit_student btn btn-info">Edit</button></td>\
                                            <td><button type="button" value="'+item.id+'"  class=" delete_student btn btn-danger">Delete</button></td>\
                                         </tr>');
                              });
                         }
                     });
                 }
+                // edit student
+                $(document).on('click','.edit_student', function (e) {
+                    e.preventDefault();
+                    var student_id= $(this).val();
+                    $('#EditStudentModal').modal('show');
+                    $.ajax({
+                        type: "GET",
+                        url: "/edit/student/"+student_id,
+                        dataType: "json",
+                        success: function (response) {
+                            
+                        }
+                    });
+                });
 
-
+                // add student
                 $(document).on('click', '.add_student', function(event) {
                     event.preventDefault();
 
@@ -149,14 +123,13 @@
                                 $('#saveformError').html("");
                                 $('#success_message').addClass("alert alert-success");
                                 $('#success_message').text(response.message);
-                                $('#AddStudentModal').modal('hide');
                                 $('#AddStudentModal').find('input').val("");
+
+                                fetchStudent()
                             }
                         }
                     });
                 });
             });
-
-            // edit student
         </script>
     @endsection

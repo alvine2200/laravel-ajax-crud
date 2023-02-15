@@ -25,4 +25,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('students', [StudentController::class, 'index']);
 Route::get('fetch/students', [StudentController::class, 'fetch']);
+Route::get('edit/student/{id}', [StudentController::class, 'edit']);
 Route::post('students', [StudentController::class, 'create']);
