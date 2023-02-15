@@ -26,28 +26,11 @@
                                         <td>Email</td>
                                         <td>Phone</td>
                                         <td>Course</td>
-                                        <td>Action</td>
+                                        <td>Edit</td>
+                                        <td>Delete</td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($students as $student)
-                                        <tr>
-                                            <td>{{ $student->id }}</td>
-                                            <td>{{ $student->name }}</td>
-                                            <td>{{ $student->email }}</td>
-                                            <td>{{ $student->phone }}</td>
-                                            <td>{{ $student->course }}</td>
-                                            <td>
-                                                <a href="" type="button" value=""  class=" view_student btn btn-info">View</a> |
-                                                <a href="" type="button" value=""  class=" edit_student btn btn-secondary">Edit</a> |
-                                                <a href="" type="button" value=""  class=" delete_student btn btn-danger">Delete</a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="6">No data Yet</td>
-                                        </tr>
-                                    @endforelse
 
                                 </tbody>
                             </table>
@@ -67,8 +50,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <div class="modal-body">                        
-                        <div class="col-md-12">                            
+                    <div class="modal-body">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <ul id="saveformError"></ul>
                                 <div class="mb-3">
@@ -107,15 +90,26 @@
         <script>
             $(document).ready(function() {
 
-                public function fetchStudent(){
+                fetchStudent()
+
+                function fetchStudent() {
                     $.ajax({
                         type: "GET",
                         url: "/fetch/students",
                         dataType: 'json',
                         success: function(response) {
-                            $.each(response.students, function (key, item) { 
-                                 
-                            });
+                            // console.log(response.data)
+                             $.each(response.data, function (key, item) { 
+                                  $('tbody').append('<tr>\
+                                            <td>'+item.id+'</td>\
+                                           <td>'+item.name+'</td>\
+                                           <td>'+item.email+'</td>\
+                                           <td>'+item.phone+'</td>\
+                                           <td>'+item.course+'</td>\
+                                           <td><button type="button" value="'+item.id+'"  class=" edit_student btn btn-info">Edit</button></td>\
+                                           <td><button type="button" value="'+item.id+'"  class=" delete_student btn btn-danger">Delete</button></td>\
+                                        </tr>');
+                             });
                         }
                     });
                 }
@@ -151,8 +145,7 @@
                                     $('#saveformError').append('<li>' + err_values +
                                         '</li>');
                                 });
-                            }
-                            else{
+                            } else {
                                 $('#saveformError').html("");
                                 $('#success_message').addClass("alert alert-success");
                                 $('#success_message').text(response.message);
@@ -165,6 +158,5 @@
             });
 
             // edit student
-            
         </script>
     @endsection
