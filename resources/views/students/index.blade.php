@@ -2,6 +2,12 @@
 @section('content')
     <div class="container">
         <div class="row">
+            @if (Session::has('success'))
+                <div class="success fw-bold">{{ Session::get('success') }}</div>
+            @elseif (Session::has('errors'))
+                <div class="errors fw-bold align-items-center">{{ Session::get('errors') }}</div>                
+            @else
+            @endif
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -42,7 +48,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     </div>
 
     <div class="modal fade" id="AddStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -108,11 +114,12 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/create/student",
-                    data: "data",
-                    dataType: "dataType",
+                    url: "/students",
+                    data: data,
+                    dataType: 'json',
                     success: function(response) {
-
+                        console.log(response)
+                        
                     }
                 });
             });
