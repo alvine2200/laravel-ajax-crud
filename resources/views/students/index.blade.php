@@ -1,4 +1,4 @@
-@extends('layouts.app');
+@extends('layouts.app')
 @section('content')
     <div class="container">
         <div class="row">
@@ -29,7 +29,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    @forelse ($students as $student)
+                                        <tr>
+                                        <td>{{ $student->id }}</td>
+                                        <td>{{ $student->name }}</td>
+                                        <td>{{ $student->email }}</td>
+                                        <td>{{ $student->phone }}</td>
+                                        <td>{{ $student->course }}</td>
+                                        <td>
+                                            <a href="" class="btn btn-info">View</a> |
+                                            <a href="" class="btn btn-secondary">Edit</a> |
+                                            <a href="" class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>  
+                                    @empty
+                                      <tr>
                                         <td>1</td>
                                         <td>avine</td>
                                         <td>alvinellavu@gmail.com</td>
@@ -40,7 +54,9 @@
                                             <a href="" class="btn btn-secondary">Edit</a> |
                                             <a href="" class="btn btn-danger">Delete</a>
                                         </td>
-                                    </tr>
+                                    </tr>  
+                                    @endforelse
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -119,7 +135,7 @@
                     dataType: 'json',
                     success: function(response) {
                         console.log(response)
-                        
+
                     }
                 });
             });
