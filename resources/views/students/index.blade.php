@@ -74,6 +74,22 @@
                         }
                     });
                 }
+
+                // delete student
+                $(document).on('click','delete_student', function (e) {
+                    e.preventDefault();
+                    var studeId=$(this).val();
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/delete/student/"+studeId,
+                        dataType: "json",
+                        success: function (response) {
+                            
+                        }
+                    });
+                });
+
                 // edit student
                 $(document).on('click','.edit_student', function (e) {
                     e.preventDefault();

@@ -6,6 +6,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Stmt\TryCatch;
 
 class StudentController extends Controller
 {
@@ -38,6 +39,25 @@ class StudentController extends Controller
                 'status' => 404,
                 'message' => 'Students Not Found',
             ]);
+        }
+    }
+
+    public function delete($id)
+    {
+        $student = Student::find($id);
+        try {
+            $student->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Student deleted succesfully',
+                'data' => [],
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Something went wrong',
+                'error' => $th,
+            ], 200);
         }
     }
 

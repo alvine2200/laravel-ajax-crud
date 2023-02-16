@@ -27,4 +27,5 @@ Route::get('students', [StudentController::class, 'index']);
 Route::post('students', [StudentController::class, 'create']);
 Route::get('fetch/students', [StudentController::class, 'fetch']);
 Route::get('edit/student/{id}', [StudentController::class, 'edit']);
+Route::delete('delete/student/{id}', [StudentController::class, 'delete']);
 Route::put('update/student/{id}', [StudentController::class, 'update']);
