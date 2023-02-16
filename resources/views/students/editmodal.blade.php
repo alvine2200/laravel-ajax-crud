@@ -9,33 +9,33 @@
                     <div class="modal-body">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="text" id="edit_stud_id">
+                                <input type="hidden" id="edit_stud_id">
                                 <div class="mb-3">
                                     <label for="name">Name</label>
                                     <input type="text" id="edit_name" name="name" placeholder="Enter Full Names..."
-                                        class="name form-control">
+                                        class="name form-control" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email">Email</label>
                                     <input type="text" id="edit_email" Email="email" placeholder="Enter Email..."
-                                        class="email form-control">
+                                        class="email form-control" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone">Phone</label>
                                     <input type="text" id="edit_phone" Phone="phone" placeholder="Enter Phone Number ..."
-                                        class="phone form-control">
+                                        class="phone form-control" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="course">Course</label>
                                     <input type="text" id="edit_course" name="course" placeholder="Enter Course..."
-                                        class=" course form-control">
+                                        class="course form-control" required>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary update_student" data-bs-dismiss="modal">Update</button>
+                        <button type="button" class="btn btn-primary update_student">Update</button>
                     </div>
                 </div>
             </div>

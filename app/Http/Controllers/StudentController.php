@@ -52,7 +52,7 @@ class StudentController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
-                'errors' => $validator->errors()->all(),
+                'error' => $validator->errors()->all(),
             ], 400);
         }
         $data = Student::create($validator->validated());
@@ -61,5 +61,36 @@ class StudentController extends Controller
             'message' => 'Student created succesfully',
             'data' => $data,
         ], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|string|email',
+            'phone' => 'required|string|numeric',
+            'course' => 'required|string|max:30'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()->all(),
+            ], 400);
+        }
+
+        $stude = Student::find($id);
+        if ($stude) {
+            $studentUpdated = $stude->update($validator->validated());
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Student updated succesfully',
+                'data' => $studentUpdated,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Student Not Found',
+            ]);
+        }
     }
 }

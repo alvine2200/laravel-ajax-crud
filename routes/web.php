@@ -24,6 +24,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('students', [StudentController::class, 'index']);
+Route::post('students', [StudentController::class, 'create']);
 Route::get('fetch/students', [StudentController::class, 'fetch']);
 Route::get('edit/student/{id}', [StudentController::class, 'edit']);
-Route::post('students', [StudentController::class, 'create']);
+Route::put('update/student/{id}', [StudentController::class, 'update']);

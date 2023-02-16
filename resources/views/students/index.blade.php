@@ -59,6 +59,7 @@
                         dataType: 'json',
                         success: function(response) {
                             // console.log(response.data)
+                            $('tbody').html("")
                              $.each(response.data, function (key, item) { 
                                   $('tbody').append('<tr>\
                                             <td>'+item.id+'</td>\
@@ -83,11 +84,63 @@
                         url: "/edit/student/"+student_id,
                         dataType: "json",
                         success: function (response) {
-                            
+                            if(response.status == 404){
+                                $('#success_message').html("");
+                                $('#success_message').addClass('alert alert-danger');
+                                $('#success_message').text(response.message);
+                            }else{
+                                $('#edit_name').val(response.data.name)
+                                $('#edit_email').val(response.data.email)
+                                $('#edit_phone').val(response.data.phone)
+                                $('#edit_course').val(response.data.course)
+                                $('#edit_stud_id').val(student_id)
+                            }
                         }
                     });
                 });
 
+                //update student               
+                $(document).on('click','.update_student', function (e) {
+                    e.preventDefault();
+                    var studId=$('#edit_stud_id').val();
+
+                    var data={
+                        'name': $('#edit_name').val(),
+                        'email': $('#edit_email').val(),
+                        'phone': $('#edit_phone').val(),
+                        'course': $('#edit_course').val(),
+                    }
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "PUT",
+                        url: "/update/student/"+studId,
+                        data: data,
+                        dataType: "json",
+                        success: function (response) {
+                            if(response.status == 400)
+                            {
+                                $.each(response.errors, function (key, err_values) { 
+                                    $('#success_message').html("");
+                                    $('#success_message').addClass('alert alert-danger')
+                                    $('#success_message').text(err_values)                                    
+                                });                                
+                            }
+                            else{
+                                $('#success_message').text(response.message) 
+                                $('#EditStudentModal').modal('hide')
+                                $('#EditStudentModal').find('input').val("")                             
+                                fetchStudent()
+                            }
+                        }
+                    });
+                });
+                
                 // add student
                 $(document).on('click', '.add_student', function(event) {
                     event.preventDefault();
@@ -115,14 +168,16 @@
                             if (response.status == 400) {
                                 $('#saveformError').html("");
                                 $('#saveformError').addClass('alert alert-danger');
-                                $.each(response.errors, function(key, err_values) {
-                                    $('#saveformError').append('<li>' + err_values +
-                                        '</li>');
+                                $.each(response.error, function(key, err_values) {
+                                    console.log(response.error)
+                                    $('#saveformError').append('<li>' + err_values + '</li>');
                                 });
                             } else {
                                 $('#saveformError').html("");
                                 $('#success_message').addClass("alert alert-success");
                                 $('#success_message').text(response.message);
+                                $('#success_message').text(response.message);
+                                $('#AddStudentModal').modal('hide');
                                 $('#AddStudentModal').find('input').val("");
 
                                 fetchStudent()
