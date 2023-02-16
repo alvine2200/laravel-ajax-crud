@@ -68,7 +68,7 @@
                                            <td>'+item.phone+'</td>\
                                            <td>'+item.course+'</td>\
                                            <td><button type="button" value="'+item.id+'" data-bs-toggle="modal" data-bs-target="#EditStudentModal" class=" edit_student btn btn-info">Edit</button></td>\
-                                           <td><button type="button" value="'+item.id+'"  class=" delete_student btn btn-danger">Delete</button></td>\
+                                           <td><button type="button" value="'+item.id+'"  class="delete_student btn btn-danger">Delete</button></td>\
                                         </tr>');
                              });
                         }
@@ -76,16 +76,31 @@
                 }
 
                 // delete student
-                $(document).on('click','delete_student', function (e) {
+                $(document).on('click','.delete_student', function (e) {
                     e.preventDefault();
                     var studeId=$(this).val();
+                    alert(studeId)
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
 
                     $.ajax({
                         type: "DELETE",
                         url: "/delete/student/"+studeId,
                         dataType: "json",
                         success: function (response) {
-                            
+                            if(response.status == 400){
+                                $('#success_message').html("");
+                                $('#success_message').addClass('alert alert-danger');
+                                $('#success_message').text(response.message);
+                            }
+                            else{
+                                $('#success_message').text(response.message)                                                            
+                                fetchStudent()
+                            }
                         }
                     });
                 });
